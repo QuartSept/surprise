@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>İyi ki Doğdun 🌿</title>
+
+<!--
+============================================================
+  BURAYI DÜZENLE  ✏️
+  Aşağıdaki yıldızlı (★) satırları kendine göre değiştir.
+  Geri kalanına dokunmana gerek yok.
+============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Nunito:wght@400;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --forest: #1b4332;
+    --emerald: #2d6a4f;
+    --leaf: #52b788;
+    --mint: #b7e4c7;
+    --paper: #f3faf5;
+    --gold: #e2b04a;
+    --ink: #1f3a2c;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+
+  body {
+    font-family: "Nunito", system-ui, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(120% 90% at 50% -10%, #cfeede 0%, var(--paper) 55%, #e3f3e8 100%);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Süzülen yapraklar (arka plan) */
+  .leaves {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .leaf {
+    position: absolute;
+    top: -8vh;
+    font-size: 1.6rem;
+    opacity: 0.55;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(-10vh) rotate(0deg); }
+    100% { transform: translateY(115vh) rotate(360deg); }
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6vh 1.25rem;
+  }
+
+  /* ---------- AÇILIŞ: HEDİYE ---------- */
+  .gift-stage {
+    text-align: center;
+    animation: floaty 4s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  .gift-hint {
+    font-family: "Caveat", cursive;
+    font-size: 1.7rem;
+    color: var(--emerald);
+    margin-bottom: 1rem;
+  }
+  .gift-btn {
+    font: inherit;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-size: 7rem;
+    line-height: 1;
+    filter: drop-shadow(0 14px 22px rgba(27, 67, 50, 0.28));
+    transition: transform 0.25s ease;
+  }
+  .gift-btn:hover { transform: scale(1.06); }
+  .gift-btn:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 8px;
+    border-radius: 24px;
+  }
+
+  /* ---------- KART ---------- */
+  .card {
+    display: none;
+    max-width: 620px;
+    width: 100%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(82, 183, 136, 0.4);
+    border-radius: 28px;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    box-shadow: 0 30px 60px -25px rgba(27, 67, 50, 0.45);
+  }
+  .card.show {
+    display: block;
+    animation: bloom 0.9s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  }
+  @keyframes bloom {
+    0%   { opacity: 0; transform: scale(0.6) translateY(30px); }
+    60%  { opacity: 1; transform: scale(1.04); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .eyebrow {
+    font-family: "Caveat", cursive;
+    font-size: 2rem;
+    color: var(--leaf);
+    margin: 0 0 0.25rem;
+  }
+  .title {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    font-size: clamp(2.6rem, 8vw, 4.4rem);
+    line-height: 1.05;
+    color: var(--forest);
+    margin: 0.25rem 0 1.25rem;
+  }
+  .title .name { color: var(--emerald); font-style: italic; }
+
+  .message {
+    font-size: 1.15rem;
+    line-height: 1.75;
+    color: var(--ink);
+    margin: 0 auto 1.75rem;
+    max-width: 46ch;
+  }
+
+  .divider {
+    width: 64px;
+    height: 2px;
+    margin: 0 auto 1.75rem;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .heart-btn {
+    font: inherit;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, var(--emerald), var(--leaf));
+    border: none;
+    cursor: pointer;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    font-size: 1.05rem;
+    box-shadow: 0 12px 24px -10px rgba(45, 106, 79, 0.7);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .heart-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 28px -10px rgba(45, 106, 79, 0.8); }
+  .heart-btn:active { transform: translateY(0); }
+  .heart-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+  .signoff {
+    font-family: "Caveat", cursive;
+    font-size: 1.6rem;
+    color: var(--emerald);
+    margin-top: 1.75rem;
+  }
+
+  /* Konfeti & tıklayınca uçan kalpler */
+  #confetti {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 5;
+  }
+  .pop-heart {
+    position: fixed;
+    z-index: 6;
+    pointer-events: none;
+    font-size: 1.6rem;
+    animation: rise 1.1s ease-out forwards;
+  }
+  @keyframes rise {
+    0%   { opacity: 1; transform: translateY(0) scale(0.6); }
+    100% { opacity: 0; transform: translateY(-120px) scale(1.3); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .leaf, .gift-stage, .card.show { animation: none !important; }
+  }
+</style>
+</head>
+
+<body>
+  <!-- Süzülen yapraklar JS ile eklenecek -->
+  <div class="leaves" id="leaves" aria-hidden="true"></div>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <main class="wrap">
+    <!-- AÇILIŞ EKRANI -->
+    <section class="gift-stage" id="giftStage">
+      <p class="gift-hint">senin için küçük bir sürprizim var…</p>
+      <button class="gift-btn" id="giftBtn" aria-label="Hediyeyi aç">🎁</button>
+      <p class="gift-hint" style="font-size:1.2rem; opacity:.8;">(dokun)</p>
+    </section>
+
+    <!-- KART -->
+    <section class="card" id="card" aria-live="polite">
+      <!-- ★ İSTERSEN DEĞİŞTİR -->
+      <p class="eyebrow">mutlu yıllar</p>
+
+      <!-- ★ İSMİ BURADA DEĞİŞTİR -->
+      <h1 class="title">İyi ki doğdun,<br /><span class="name">Aşkım</span> 🌿</h1>
+
+      <!-- ★ MESAJINI BURAYA YAZ -->
+      <p class="message">
+        Bir yılı daha yanımda, gülüşünle her şeyi yeşerten halinle
+        geçirdiğin için çok şanslıyım. Bugün senin günün — keşke
+        her dileğin bir tohum gibi açsa. Seni çok seviyorum.
+      </p>
+
+      <div class="divider"></div>
+
+      <button class="heart-btn" id="heartBtn">Bir öpücük gönder 💚</button>
+
+      <!-- ★ İSTERSEN İMZANI DEĞİŞTİR -->
+      <p class="signoff">— sevgiyle, ben</p>
+    </section>
+  </main>
+
+<script>
+  // ---- Süzülen yapraklar ----
+  (function () {
+    const leafChars = ["🌿", "🍃", "🌱"];
+    const container = document.getElementById("leaves");
+    const count = window.matchMedia("(max-width: 600px)").matches ? 9 : 16;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement("span");
+      el.className = "leaf";
+      el.textContent = leafChars[i % leafChars.length];
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.animationDuration = 9 + Math.random() * 9 + "s";
+      el.style.animationDelay = -Math.random() * 12 + "s";
+      el.style.fontSize = 1 + Math.random() * 1.4 + "rem";
+      container.appendChild(el);
+    }
+  })();
+
+  // ---- Hediyeyi aç ----
+  const giftBtn = document.getElementById("giftBtn");
+  const giftStage = document.getElementById("giftStage");
+  const card = document.getElementById("card");
+
+  giftBtn.addEventListener("click", () => {
+    giftStage.style.display = "none";
+    card.classList.add("show");
+    burst();
+  });
+
+  // ---- Tıklayınca uçan kalp ----
+  const heartBtn = document.getElementById("heartBtn");
+  heartBtn.addEventListener("click", (e) => {
+    burst();
+    for (let i = 0; i < 6; i++) {
+      const h = document.createElement("span");
+      h.className = "pop-heart";
+      h.textContent = ["💚", "💛", "🤍"][i % 3];
+      const r = heartBtn.getBoundingClientRect();
+      h.style.left = r.left + r.width / 2 + (Math.random() * 60 - 30) + "px";
+      h.style.top = r.top + "px";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1200);
+    }
+  });
+
+  // ---- Konfeti (yeşil & altın tonları) ----
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  let pieces = [];
+  const colors = ["#2d6a4f", "#52b788", "#b7e4c7", "#e2b04a", "#95d5b2"];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  function burst() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    for (let i = 0; i < 120; i++) {
+      pieces.push({
+        x: canvas.width / 2 + (Math.random() * 200 - 100),
+        y: canvas.height / 2,
+        vx: Math.random() * 8 - 4,
+        vy: Math.random() * -12 - 4,
+        size: Math.random() * 8 + 4,
+        color: colors[(Math.random() * colors.length) | 0],
+        rot: Math.random() * Math.PI,
+        vr: Math.random() * 0.2 - 0.1,
+        life: 1,
+      });
+    }
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach((p) => {
+      p.vy += 0.25;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life -= 0.008;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(p.life, 0);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+      ctx.restore();
+    });
+    pieces = pieces.filter((p) => p.life > 0 && p.y < canvas.height + 20);
+    requestAnimationFrame(tick);
+  }
+  tick();
+</script>
+</body>
+</html>
