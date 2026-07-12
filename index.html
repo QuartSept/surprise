@@ -196,7 +196,37 @@
   .next-btn:hover{background:rgba(231,201,135,.18)}
   .next-btn:active{transform:translateY(1px)}
 
-  /* ---------- FINALE ---------- */
+  /* ---------- EASTER EGG: deed ---------- */
+  #deedWrap{z-index:6;overflow-y:auto;align-items:flex-start;padding:18px 16px 28px}
+  .deed{width:min(96vw,560px);margin:auto;display:flex;flex-direction:column;align-items:center;gap:14px;
+    opacity:0;transform:translateY(16px) scale(.97);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.3,1)}
+  #deedWrap.show-in .deed{opacity:1;transform:none}
+  .deed-inner{width:100%;position:relative;padding:26px 22px 20px;border-radius:6px;color:#3a2f1c;
+    background:
+      repeating-linear-gradient(0deg,rgba(140,110,60,.035) 0 2px,transparent 2px 4px),
+      linear-gradient(180deg,#faf5e6,#f0e6cd);
+    border:1px solid #c9b487;
+    box-shadow:0 0 0 6px rgba(250,245,230,.35),0 22px 60px rgba(0,0,0,.5),inset 0 0 40px rgba(180,150,90,.16)}
+  .deed-inner::before{content:"";position:absolute;inset:8px;border:1.5px double #c2a97a;border-radius:3px;pointer-events:none}
+  .deed-head{text-align:center;padding-bottom:12px;margin-bottom:14px;border-bottom:1.5px solid rgba(150,120,70,.35)}
+  .deed-org{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#957c4b}
+  .deed-title{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(22px,6vw,30px);letter-spacing:.06em;color:#4b3a1b;margin:5px 0 4px}
+  .deed-no{font-size:10.5px;letter-spacing:.1em;color:#9c8557}
+  .deed-rows{display:flex;flex-direction:column;gap:0;margin-bottom:14px}
+  .deed-rows .row{display:flex;justify-content:space-between;gap:12px;padding:7px 2px;border-bottom:1px dotted rgba(150,120,70,.35);font-size:13px}
+  .deed-rows .row span{color:#93794a;letter-spacing:.02em;flex:0 0 auto}
+  .deed-rows .row b{color:#3d3018;font-weight:600;text-align:right}
+  .deed-text{font-size:13.5px;line-height:1.62;margin-bottom:10px;text-align:justify;color:#453720}
+  .deed-text b{color:#3a2c10}
+  .deed-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:16px}
+  .sign-col{flex:1;text-align:center;font-size:10.5px;color:#8a7247;line-height:1.4}
+  .sign-col b{color:#4a3a1c;font-size:11.5px}
+  .sign-line{height:1px;background:rgba(120,95,55,.5);margin:0 6px 6px}
+  .seal{width:104px;height:104px;flex:0 0 auto;transform:rotate(-9deg);opacity:0;
+    animation:sealIn .7s 1s cubic-bezier(.2,.9,.3,1) forwards}
+  .seal svg{width:100%;height:100%;display:block}
+  @keyframes sealIn{0%{opacity:0;transform:rotate(-9deg) scale(2.1)}70%{opacity:.95;transform:rotate(-9deg) scale(.94)}100%{opacity:.95;transform:rotate(-9deg) scale(1)}}
+  .deed-btn{max-width:300px}
   #finale{flex-direction:column;text-align:center}
   .fin-date{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(34px,10vw,64px);color:#3a2c12;opacity:0;transform:scale(.92);
     text-shadow:0 2px 24px rgba(255,243,214,.55);transition:opacity .45s ease,transform .45s ease}
@@ -261,6 +291,7 @@
     .call-answer{animation:none}
     .caret{display:none}
     .grow{transform:scale(1)!important;animation:none!important}
+    .seal{animation:none;opacity:.95}
   }
 </style>
 </head>
@@ -336,14 +367,77 @@
     <div class="flowers" id="flowers"></div>
   </div>
 
-  <audio id="bgm" loop preload="auto"></audio>
+  <!-- EASTER EGG: tapu belgesi -->
+  <div class="overlay hidden" id="deedWrap">
+    <div class="deed" id="deed">
+      <div class="deed-inner">
+        <div class="deed-head">
+          <div class="deed-org">Kalpler Tapu ve Kadastro Müdürlüğü</div>
+          <h2 class="deed-title">MÜLKİYET BELGESİ</h2>
+          <div class="deed-no">Belge No: 15/05 · Cilt: Kalp · Sayfa: 1</div>
+        </div>
 
+        <div class="deed-rows">
+          <div class="row"><span>Taşınır Mal</span><b>Emrecan Ölmez</b></div>
+          <div class="row"><span>Cinsi</span><b>Ayıcık (evcil, sadık)</b></div>
+          <div class="row"><span>Malik</span><b>Sinem Kahraman</b></div>
+          <div class="row"><span>Hisse Oranı</span><b>Tam ve bölünmez (1/1)</b></div>
+          <div class="row"><span>Edinme Tarihi</span><b>15 Mayıs</b></div>
+          <div class="row"><span>Edinme Sebebi</span><b>Bir mektup, bir gülümseme</b></div>
+          <div class="row"><span>Süre</span><b>Süresiz — iptali mümkün değildir</b></div>
+        </div>
+
+        <p class="deed-text">
+          İşbu belge ile; yukarıda kimliği yazılı <b>Emrecan Ölmez</b>'in kalbi, aklı ve
+          bütün güzel günleri, hiçbir baskı altında kalmaksızın, kendi rızası ve büyük bir
+          mutlulukla <b>Sinem Kahraman</b>'a devredilmiştir.
+        </p>
+        <p class="deed-text">
+          Malik; söz konusu ayıcığı sarılma, uykusunu bölme, saçını dağıtma, sebepsiz yere
+          trip atma ve her koşulda sevilme haklarına <i>sınırsız</i> olarak sahiptir.
+          Ayıcık ise; her sabah iyi ki uyandığını hatırlatmak, her gece iyi ki var demek ve
+          ne olursa olsun yanında kalmakla yükümlüdür.
+        </p>
+        <p class="deed-text">
+          Bu tapu; yıldızlar altında imzalanmış, yeşil kelebekler huzurunda tescillenmiş ve
+          kayan bir yıldıza dilek olarak bırakılmıştır. Devri, iadesi ve iptali
+          <b>mümkün değildir.</b>
+        </p>
+
+        <div class="deed-foot">
+          <div class="sign-col">
+            <div class="sign-line"></div>
+            <span>Devreden<br><b>Emrecan Ölmez</b></span>
+          </div>
+          <div class="seal">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" fill="none" stroke="#a8324a" stroke-width="3"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="#a8324a" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <path id="sealArc" d="M60,18 a42,42 0 1,1 -0.1,0" fill="none"/>
+              <text fill="#a8324a" font-size="10.5" font-family="Inter,sans-serif" letter-spacing="2.4">
+                <textPath href="#sealArc" startOffset="6%">SONSUZA KADAR · SENİN · SONSUZA KADAR ·</textPath>
+              </text>
+              <path d="M60 82C60 82 38 68 38 53 38 45 44 40 50 40 54 40 58 43 60 47 62 43 66 40 70 40 76 40 82 45 82 53 82 68 60 82 60 82Z" fill="#a8324a" opacity=".92"/>
+            </svg>
+          </div>
+          <div class="sign-col">
+            <div class="sign-line"></div>
+            <span>Malik<br><b>Sinem Kahraman</b></span>
+          </div>
+        </div>
+      </div>
+      <button class="cta deed-btn" id="deedBtn">Kabul ediyorum ✍️</button>
+    </div>
+  </div>
+
+  <audio id="bgm" loop preload="auto"></audio>
 <script>
 /* ===== AYARLAR =====
    MUSIC_SRC: müzik dosyası hazır olunca tırnakların içine yaz (ör. "comptine.mp3").
    Boşsa site sessiz çalışır. */
 const MUSIC_SRC = "";
 const ACCEPTED = ["ayicigim","ayicik"];
+const EGG = ["kocam","kocacigim","kocacim","koca","kocambenim","kocis","kocacik"];
 
 function normalize(s){
   return (s||"").toLocaleLowerCase("tr")
@@ -612,7 +706,30 @@ kissBtn.addEventListener('click',()=>{
 document.getElementById('toNext').addEventListener('click',()=>{ day<DAYS.length-1 ? nextDay() : toFinale(); });
 document.getElementById('finNext').addEventListener('click',showMsg2);
 
-function check(){if(done)return;ACCEPTED.includes(normalize(input.value))?succeed():wrong();}
+/* easter egg: tapu */
+const deedWrap=document.getElementById('deedWrap');
+function showDeed(){
+  if(done)return;done=true;
+  hint.classList.remove('show');input.blur();teddy.classList.remove('up');startMusic();
+  box.classList.add('leaving');
+  setTimeout(()=>{scene1.classList.add('hidden');},600);
+  setTimeout(()=>{deedWrap.classList.remove('hidden');requestAnimationFrame(()=>deedWrap.classList.add('show-in'));},900);
+}
+document.getElementById('deedBtn').addEventListener('click',()=>{
+  deedWrap.classList.remove('show-in');deedWrap.classList.add('hidden');
+  done=false;                      // normal akış kaldığı yerden devam etsin
+  setTimeout(()=>{ done=true; startMusic();
+    setTimeout(()=>{warping=true;targetSpeed=WARP_SPEED;},reduce?0:200);
+    setTimeout(()=>{targetSpeed=BASE_SPEED;warping=false;},reduce?300:2500);
+    setTimeout(startJourney,reduce?400:2900);
+  },900);
+});
+
+function check(){if(done)return;
+  const v=normalize(input.value);
+  if(ACCEPTED.includes(v))succeed();
+  else if(EGG.includes(v))showDeed();
+  else wrong();}
 document.getElementById('go').addEventListener('click',check);
 input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
 input.addEventListener('input',()=>hint.classList.remove('show'));
