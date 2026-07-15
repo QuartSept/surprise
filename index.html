@@ -749,7 +749,10 @@ deedDl.addEventListener('click',async()=>{
   const paper=document.getElementById('deedPaper');
   const old=deedDl.textContent;deedDl.textContent='hazırlanıyor…';deedDl.disabled=true;
   try{
-    const canvas=await html2canvas(paper,{scale:2,backgroundColor:null,useCORS:true,logging:false});
+    const canvas=await html2canvas(paper,{scale:2,backgroundColor:null,useCORS:true,logging:false,
+      onclone:(doc)=>{const p=doc.getElementById('deedPaper');if(p){const s=p.querySelector('.seal');
+        if(s){s.style.opacity='0.95';s.style.animation='none';s.style.transform='rotate(-9deg) scale(1)';}}}
+    });
     await new Promise(res=>canvas.toBlob(b=>{
       const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tapu-emrecan-sinem.png';
       document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);res();
