@@ -228,6 +228,7 @@
   @keyframes sealIn{0%{opacity:0;transform:rotate(-9deg) scale(2.1)}70%{opacity:.95;transform:rotate(-9deg) scale(.94)}100%{opacity:.95;transform:rotate(-9deg) scale(1)}}
   .deed-btn{max-width:300px}
   .deed-actions{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .dl-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
   .deed-dl{border:1px solid var(--gold-dim);background:rgba(8,8,20,.28);color:var(--gold-soft);border-radius:30px;
     padding:9px 20px;font-family:'Inter',sans-serif;font-size:12.5px;letter-spacing:.03em;cursor:pointer;transition:background .25s,transform .15s}
   .deed-dl:hover{background:rgba(231,201,135,.16)}
@@ -434,7 +435,10 @@
       </div>
       <div class="deed-actions">
         <button class="cta deed-btn" id="deedBtn">Kabul ediyorum ✍️</button>
-        <button class="deed-dl" id="deedDl" type="button">⬇ Belgeyi indir</button>
+        <div class="dl-row">
+          <button class="deed-dl" id="deedDl" type="button">⬇ Normal indir</button>
+          <button class="deed-dl" id="deedDl2" type="button">🖼️ 10×15 baskı</button>
+        </div>
       </div>
     </div>
   </div>
@@ -744,23 +748,44 @@ function check(){if(done)return;
 
 /* tapu indirme */
 const deedDl=document.getElementById('deedDl');
-deedDl.addEventListener('click',async()=>{
-  if(typeof html2canvas!=='function'){deedDl.textContent='indirme kullanılamıyor';return;}
+const deedDl2=document.getElementById('deedDl2');
+
+function captureDeed(){
   const paper=document.getElementById('deedPaper');
-  const old=deedDl.textContent;deedDl.textContent='hazırlanıyor…';deedDl.disabled=true;
-  try{
-    const canvas=await html2canvas(paper,{scale:2,backgroundColor:null,useCORS:true,logging:false,
-      onclone:(doc)=>{const p=doc.getElementById('deedPaper');if(p){const s=p.querySelector('.seal');
-        if(s){s.style.opacity='0.95';s.style.animation='none';s.style.transform='rotate(-9deg) scale(1)';}}}
-    });
-    await new Promise(res=>canvas.toBlob(b=>{
-      const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='tapu-emrecan-sinem.png';
-      document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);res();
-    },'image/png'));
-    deedDl.textContent='indirildi ✓';
-  }catch(e){deedDl.textContent='indirilemedi, tekrar dene';}
-  setTimeout(()=>{deedDl.textContent=old;deedDl.disabled=false;},2200);
-});
+  return html2canvas(paper,{scale:2,backgroundColor:null,useCORS:true,logging:false,
+    onclone:(doc)=>{const p=doc.getElementById('deedPaper');if(p){const s=p.querySelector('.seal');
+      if(s){s.style.opacity='0.95';s.style.animation='none';s.style.transform='rotate(-9deg) scale(1)';}}}
+  });
+}
+function saveCanvas(canvas,name){
+  return new Promise(res=>canvas.toBlob(b=>{
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);res();
+  },'image/png'));
+}
+async function saveNormal(){const c=await captureDeed();await saveCanvas(c,'tapu-emrecan-sinem.png');}
+async function save10x15(){
+  const src=await captureDeed();
+  const OW=1181, OH=1772;                 // 10x15 cm @ 300 DPI (dikey)
+  const out=document.createElement('canvas');out.width=OW;out.height=OH;
+  const g=out.getContext('2d');
+  g.fillStyle='#e7d9b8';g.fillRect(0,0,OW,OH);                 // baskı kenar boşluğu (parşömen tonu)
+  const m=0.055, availW=OW*(1-2*m), availH=OH*(1-2*m);
+  const s=Math.min(availW/src.width, availH/src.height);
+  const dw=src.width*s, dh=src.height*s, dx=(OW-dw)/2, dy=(OH-dh)/2;
+  g.save();g.shadowColor='rgba(0,0,0,.28)';g.shadowBlur=34;g.shadowOffsetY=12;
+  g.drawImage(src,dx,dy,dw,dh);g.restore();
+  await saveCanvas(out,'tapu-emrecan-sinem-10x15.png');
+}
+async function runDl(btn,fn){
+  if(typeof html2canvas!=='function'){btn.textContent='indirme kullanılamıyor';return;}
+  const old=btn.textContent;btn.textContent='hazırlanıyor…';deedDl.disabled=true;deedDl2.disabled=true;
+  try{await fn();btn.textContent='indirildi ✓';}
+  catch(e){btn.textContent='indirilemedi, tekrar dene';}
+  setTimeout(()=>{btn.textContent=old;deedDl.disabled=false;deedDl2.disabled=false;},2400);
+}
+deedDl.addEventListener('click',()=>runDl(deedDl,saveNormal));
+deedDl2.addEventListener('click',()=>runDl(deedDl2,save10x15));
 document.getElementById('go').addEventListener('click',check);
 input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
 input.addEventListener('input',()=>hint.classList.remove('show'));
